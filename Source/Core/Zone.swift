@@ -118,7 +118,7 @@ class Zone {
     }
     let modifyZoneSubscriptionsOperation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: nil)
     modifyZoneSubscriptionsOperation.modifySubscriptionsCompletionBlock = { (_,_,operationError) in
-      completionBlock?(error: operationError)
+      completionBlock?(successful: false)
     }
     NSOperationQueue().addOperation(modifyZoneSubscriptionsOperation)
   }

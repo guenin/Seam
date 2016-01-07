@@ -153,13 +153,7 @@ public class Store: NSIncrementalStore {
   }
   
   public func subscribeToPushNotifications(completionBlock: ((successful: Bool) -> ())?) {
-    zone.createSubscription({ successful in
-      guard successful else {
-        completionBlock?(successful: false)
-        return
-      }
-      completionBlock?(successful: true)
-    })
+    zone.createSubscription(completionBlock)
   }
   
   func setUniqueIDForInsertedObject(uniqueID: String, insertedObject: NSManagedObject) {

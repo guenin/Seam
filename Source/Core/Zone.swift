@@ -109,16 +109,9 @@ class Zone {
   }
   
   func createSubscription(completionBlock: ((successful: Bool) -> ())?) {
-    let fetchZoneSubscriptions = CKFetchSubscriptionsOperation(subscriptionIDs: [subscription.subscriptionID])
-    fetchZoneSubscriptions.fetchSubscriptionCompletionBlock = { (subscriptionsByID, error) in
-      guard let allSubscriptionsByID = subscriptionsByID where error == nil else {
-        completionBlock?(successful: false)
-        return
-      }
-    }
     let modifyZoneSubscriptionsOperation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: nil)
     modifyZoneSubscriptionsOperation.modifySubscriptionsCompletionBlock = { (_,_,operationError) in
-      completionBlock?(successful: false)
+      completionBlock?(successful: operationError != nil)
     }
     NSOperationQueue().addOperation(modifyZoneSubscriptionsOperation)
   }

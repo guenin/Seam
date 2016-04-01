@@ -240,7 +240,13 @@ public class Store: NSIncrementalStore {
         let objectID = newObjectIDForEntity(entity, referenceObject: recordID)
         valuesDictionary[key] = objectID
       }
+
+      // Replace NSNull with nil
+      if value is NSNull {
+        valuesDictionary[key] = nil
+      }
     }
+
     let incrementalStoreNode = NSIncrementalStoreNode(objectID: objectID, withValues: valuesDictionary, version: 1)
     return incrementalStoreNode
   }

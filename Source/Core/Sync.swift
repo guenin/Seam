@@ -194,7 +194,7 @@ class Sync: NSOperation {
     guard let localChanges = try changeManager.all() else {
       return (insertedOrUpdatedRecordsAndChanges: insertedOrUpdatedRecordsAndChanges, deletedCKRecordIDs: deletedCKRecordIDs)
     }
-    try localChanges.forEach { change in
+    for change in localChanges {
       if change.isDeletedType {
         let recordZoneID = zone.zone.zoneID
         let recordID = CKRecordID(recordName: change.uniqueID, zoneID: recordZoneID)
@@ -204,10 +204,10 @@ class Sync: NSOperation {
         let uniqueID = change.uniqueID
         let entityName = change.entityName!
         guard let backingObjectID = try backingStoreContext.objectIDForBackingObjectForEntity(entityName, uniqueID: uniqueID) else {
-          return
+          break
         }
         guard let managedObject = try storeContext.objectWithBackingObjectID(backingObjectID) else {
-          return
+          break
         }
         if let propertyValueDictionary = changeManager.changedPropertyValuesDictionaryForChange(change, changedObject: managedObject) {
           let encodedMetadata = try metadataManager.metadataWithUniqueID(change.uniqueID)?.data
